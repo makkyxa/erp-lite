@@ -1,0 +1,14 @@
+# Import all models to ensure they are registered on declarative Base
+from app.database.database import Base
+from app.models.user import User
+from app.models.customer import Customer
+from app.models.car import Car
+from app.models.order import Order
+from app.models.comment import Comment
+from app.models.photo import Photo
+from app.models.log import ActivityLog
+from app.models.warehouse import WarehouseItem
+from app.models.service import Service
+from app.models.order_service import OrderService
+from app.models.order_part import OrderPart
+from app.models.payment import Payment
