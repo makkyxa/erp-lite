@@ -110,7 +110,7 @@ graph TD
 
 1. Clone the repository and copy the environment template:
    ```bash
-   git clone https://github.com/yourusername/erp-lite.git
+   git clone https://github.com/makkyxa/erp-lite.git
    cd erp-lite
    cp .env.example .env
    ```
