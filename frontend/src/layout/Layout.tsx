@@ -21,7 +21,7 @@ export const Layout: React.FC = () => {
           flexDirection: "column",
         }}
       >
-        <Toolbar /> {/* Offsets page content from fixed AppBar */}
+        <Toolbar /> {}
         <Box sx={{ flexGrow: 1, mt: 2 }}>
           <Outlet />
         </Box>

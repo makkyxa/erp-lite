@@ -5,12 +5,10 @@ from sqlalchemy import Boolean, Enum, String, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column
 from app.database.database import Base
 
-
 class UserRole(str, enum.Enum):
     ADMIN = "ADMIN"
     MANAGER = "MANAGER"
     ENGINEER = "ENGINEER"
-
 
 class User(Base):
     __tablename__ = "users"

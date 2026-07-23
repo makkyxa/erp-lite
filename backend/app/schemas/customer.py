@@ -3,7 +3,6 @@ import uuid
 from pydantic import BaseModel, EmailStr, Field, field_validator
 from app.utils.validators import validate_phone_number
 
-
 class CustomerBase(BaseModel):
     full_name: str = Field(..., min_length=1, max_length=255)
     phone: str = Field(...)
@@ -15,10 +14,8 @@ class CustomerBase(BaseModel):
     def clean_and_validate_phone(cls, v: str) -> str:
         return validate_phone_number(v)
 
-
 class CustomerCreate(CustomerBase):
     pass
-
 
 class CustomerUpdate(BaseModel):
     full_name: Optional[str] = Field(None, min_length=1, max_length=255)
@@ -32,7 +29,6 @@ class CustomerUpdate(BaseModel):
         if v is not None:
             return validate_phone_number(v)
         return v
-
 
 class CustomerResponse(CustomerBase):
     id: uuid.UUID

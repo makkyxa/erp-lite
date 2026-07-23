@@ -4,23 +4,17 @@ from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 
-# This is the Alembic Config object
 config = context.config
 
-# Interpret the config file for Python logging
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# Import the Base metadata which registers all models
 from app.database.base import Base
 target_metadata = Base.metadata
 
-# Import settings to read dynamic connection URI
 from app.core.config import settings
 
-
 def run_migrations_offline() -> None:
-    """Run migrations in 'offline' mode."""
     url = settings.DATABASE_URL
     context.configure(
         url=url,
@@ -32,16 +26,13 @@ def run_migrations_offline() -> None:
     with context.begin_transaction():
         context.run_migrations()
 
-
 def do_run_migrations(connection) -> None:
     context.configure(connection=connection, target_metadata=target_metadata)
 
     with context.begin_transaction():
         context.run_migrations()
 
-
 async def run_migrations_online() -> None:
-    """Run migrations in 'online' mode."""
     configuration = config.get_section(config.config_ini_section) or {}
     configuration["sqlalchemy.url"] = settings.DATABASE_URL
 
@@ -55,7 +46,6 @@ async def run_migrations_online() -> None:
         await connection.run_sync(do_run_migrations)
 
     await connectable.dispose()
-
 
 if context.is_offline_mode():
     run_migrations_offline()

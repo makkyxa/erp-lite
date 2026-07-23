@@ -4,7 +4,6 @@ from sqlalchemy import CheckConstraint, DateTime, Numeric, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column
 from app.database.database import Base
 
-
 class Service(Base):
     __tablename__ = "services"
 

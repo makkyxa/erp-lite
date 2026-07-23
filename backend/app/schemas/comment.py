@@ -2,18 +2,14 @@ from datetime import datetime
 import uuid
 from pydantic import BaseModel, Field
 
-
 class CommentBase(BaseModel):
     text: str = Field(..., min_length=1)
-
 
 class CommentCreate(CommentBase):
     order_id: uuid.UUID
 
-
 class CommentUpdate(BaseModel):
     text: str = Field(..., min_length=1)
-
 
 class CommentResponse(CommentBase):
     id: uuid.UUID

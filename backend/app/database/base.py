@@ -1,4 +1,3 @@
-# Import all models to ensure they are registered on declarative Base
 from app.database.database import Base
 from app.models.user import User
 from app.models.customer import Customer

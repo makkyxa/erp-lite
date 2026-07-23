@@ -2,7 +2,6 @@ import asyncio
 import sys
 import os
 
-# Add backend directory to python path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from sqlalchemy import select
@@ -10,17 +9,12 @@ from app.database.session import SessionLocal
 from app.models.user import User, UserRole
 from app.core.security import get_password_hash
 
-
 async def seed_admin():
     print("Connecting to database for seeding...")
     async with SessionLocal() as db:
         try:
-            # Check if admin user already exists
             query = select(User).where(User.role == UserRole.ADMIN)
             result = db.execute(query)
-            # Fetch first
-            # Since SessionLocal is an async session, we must await the execute!
-            # Wait, let's execute and await result:
             db_res = await db.execute(query)
             admin = db_res.scalars().first()
 
@@ -48,7 +42,6 @@ async def seed_admin():
         except Exception as e:
             print(f"Error during seeding: {e}")
             await db.rollback()
-
 
 if __name__ == "__main__":
     asyncio.run(seed_admin())

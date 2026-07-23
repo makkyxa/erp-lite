@@ -10,7 +10,6 @@ from app.models.order import Order, OrderStatus, OrderPriority
 from app.schemas.order import OrderCreate, OrderUpdate
 from app.core.exceptions import NotFoundException, ConflictException, BusinessLogicException
 
-
 class OrderService:
     def __init__(self, db: AsyncSession):
         self.db = db
@@ -20,30 +19,22 @@ class OrderService:
         self.user_repo = UserRepository(db)
 
     async def create_order(self, order_in: OrderCreate, creator_id: uuid.UUID) -> Order:
-        """
-        Validate entities, assign serial order number, and initialize repair order.
-        """
-        # Validate Customer
         customer = await self.customer_repo.get(order_in.customer_id)
         if not customer:
             raise NotFoundException("Customer not found")
 
-        # Validate Car
         car = await self.car_repo.get(order_in.car_id)
         if not car:
             raise NotFoundException("Car not found")
 
-        # If car does not belong to customer, raise error
         if car.customer_id != customer.id:
             raise BusinessLogicException("Car does not belong to the selected customer")
 
-        # Validate Engineer if provided
         if order_in.engineer_id:
             engineer = await self.user_repo.get(order_in.engineer_id)
             if not engineer:
                 raise NotFoundException("Assigned engineer not found")
 
-        # Generate unique order number: ORD-YYYYMMDD-XXXX
         today = datetime.now(timezone.utc).strftime("%Y%m%d")
         random_suffix = uuid.uuid4().hex[:4].upper()
         order_number = f"ORD-{today}-{random_suffix}"
@@ -57,18 +48,15 @@ class OrderService:
         return order
 
     async def get_order(self, order_id: uuid.UUID) -> Order:
-        """Retrieve an order by ID."""
         order = await self.order_repo.get(order_id)
         if not order:
             raise NotFoundException("Order not found")
         return order
 
     async def get_orders(self, skip: int = 0, limit: int = 100) -> List[Order]:
-        """Retrieve multiple orders."""
         return await self.order_repo.get_multi(skip=skip, limit=limit)
 
     async def update_order(self, order_id: uuid.UUID, order_in: OrderUpdate) -> Order:
-        """Update order details."""
         order = await self.get_order(order_id)
         
         if order.status in (OrderStatus.DELIVERED, OrderStatus.CANCELLED):
@@ -91,7 +79,6 @@ class OrderService:
             if not engineer:
                 raise NotFoundException("Engineer not found")
 
-        # If updating status, delegate to transition state machine
         if "status" in obj_data and obj_data["status"] != order.status:
             new_status = obj_data.pop("status")
             await self.transition_status(order_id, new_status)
@@ -99,16 +86,12 @@ class OrderService:
         return await self.order_repo.update(db_obj=order, obj_in=obj_data)
 
     async def transition_status(self, order_id: uuid.UUID, new_status: OrderStatus) -> Order:
-        """
-        Manage state machine for order transitions.
-        """
         order = await self.get_order(order_id)
         current = order.status
 
         if current in (OrderStatus.DELIVERED, OrderStatus.CANCELLED):
             raise BusinessLogicException(f"Cannot transition order from terminal status {current}")
 
-        # Allowed transitions
         allowed = {
             OrderStatus.CREATED: [OrderStatus.WAITING_PARTS, OrderStatus.IN_PROGRESS, OrderStatus.CANCELLED],
             OrderStatus.WAITING_PARTS: [OrderStatus.IN_PROGRESS, OrderStatus.CANCELLED],
@@ -128,10 +111,8 @@ class OrderService:
         return await self.order_repo.update(db_obj=order, obj_in=obj_in)
 
     async def delete_order(self, order_id: uuid.UUID) -> Order:
-        """Delete an order."""
         order = await self.get_order(order_id)
         
-        # Check financial records
         if order.payments:
             raise BusinessLogicException("Cannot delete an order that has registered payments")
             

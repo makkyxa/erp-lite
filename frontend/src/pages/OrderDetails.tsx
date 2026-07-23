@@ -79,15 +79,12 @@ export const OrderDetails: React.FC = () => {
   const [photoDesc, setPhotoDesc] = useState("");
   const [photoType, setPhotoType] = useState<PhotoType>(PhotoType.BEFORE);
 
-  // Comment edit state
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [editingCommentText, setEditingCommentText] = useState("");
 
-  // Comment delete state
   const [deleteCommentOpen, setDeleteCommentOpen] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState<string | null>(null);
 
-  // Query Order
   const { data: order, isLoading: isLoadingOrder } = useQuery<Order>({
     queryKey: ["order", id],
     queryFn: async () => {
@@ -96,7 +93,6 @@ export const OrderDetails: React.FC = () => {
     },
   });
 
-  // Query Comments
   const { data: comments = [] } = useQuery<Comment[]>({
     queryKey: ["order-comments", id],
     queryFn: async () => {
@@ -105,7 +101,6 @@ export const OrderDetails: React.FC = () => {
     },
   });
 
-  // Query Photos
   const { data: photos = [] } = useQuery<Photo[]>({
     queryKey: ["order-photos", id],
     queryFn: async () => {
@@ -114,7 +109,6 @@ export const OrderDetails: React.FC = () => {
     },
   });
 
-  // Mutation: Change status
   const statusMutation = useMutation({
     mutationFn: (newStatus: OrderStatus) =>
       api.patch(`/v1/orders/${id}/status?status_in=${newStatus}`),
@@ -127,7 +121,6 @@ export const OrderDetails: React.FC = () => {
     },
   });
 
-  // Mutation: Add comment
   const commentMutation = useMutation({
     mutationFn: (text: string) => api.post(`/v1/orders/${id}/comments`, { text, order_id: id }),
     onSuccess: () => {
@@ -138,7 +131,6 @@ export const OrderDetails: React.FC = () => {
     onError: () => showError("Ошибка добавления комментария"),
   });
 
-  // Mutation: Edit comment
   const editCommentMutation = useMutation({
     mutationFn: (data: { id: string; text: string }) =>
       api.put(`/v1/comments/${data.id}`, { text: data.text }),
@@ -151,7 +143,6 @@ export const OrderDetails: React.FC = () => {
     onError: () => showError("Ошибка изменения комментария"),
   });
 
-  // Mutation: Delete comment
   const deleteCommentMutation = useMutation({
     mutationFn: (commentId: string) => api.delete(`/v1/comments/${commentId}`),
     onSuccess: () => {
@@ -161,7 +152,6 @@ export const OrderDetails: React.FC = () => {
     onError: () => showError("Ошибка удаления комментария"),
   });
 
-  // Mutation: Upload photo
   const photoMutation = useMutation({
     mutationFn: (data: { file_path: string; description: string; photo_type: PhotoType }) =>
       api.post(`/v1/orders/${id}/photos`, { ...data, order_id: id }),
@@ -257,7 +247,7 @@ export const OrderDetails: React.FC = () => {
       </Paper>
 
       <Grid container spacing={4}>
-        {/* Comments Section */}
+        {}
         <Grid size={{ xs: 12, md: 6 }}>
           <Paper sx={{ p: 3, borderRadius: 3, minHeight: 400, display: "flex", flexDirection: "column" }}>
             <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>Рабочие заметки / комментарии</Typography>
@@ -341,7 +331,7 @@ export const OrderDetails: React.FC = () => {
           </Paper>
         </Grid>
 
-        {/* Photos Section */}
+        {}
         <Grid size={{ xs: 12, md: 6 }}>
           <Paper sx={{ p: 3, borderRadius: 3, minHeight: 400, display: "flex", flexDirection: "column" }}>
             <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>Фотоотчеты (До / После / Документы)</Typography>
@@ -403,7 +393,7 @@ export const OrderDetails: React.FC = () => {
         </Grid>
       </Grid>
 
-      {/* Delete Confirmation */}
+      {}
       <ConfirmDialog
         open={deleteCommentOpen}
         title="Удаление комментария"

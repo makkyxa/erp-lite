@@ -6,7 +6,6 @@ from sqlalchemy import CheckConstraint, DateTime, Enum, ForeignKey, Numeric, Str
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.database import Base
 
-
 class OrderStatus(str, enum.Enum):
     CREATED = "CREATED"
     WAITING_PARTS = "WAITING_PARTS"
@@ -15,13 +14,11 @@ class OrderStatus(str, enum.Enum):
     DELIVERED = "DELIVERED"
     CANCELLED = "CANCELLED"
 
-
 class OrderPriority(str, enum.Enum):
     LOW = "LOW"
     NORMAL = "NORMAL"
     HIGH = "HIGH"
     URGENT = "URGENT"
-
 
 class Order(Base):
     __tablename__ = "orders"
@@ -63,7 +60,6 @@ class Order(Base):
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False
     )
 
-    # Relationships
     customer: Mapped["Customer"] = relationship(back_populates="orders")
     car: Mapped["Car"] = relationship(back_populates="orders")
     engineer: Mapped["User"] = relationship(foreign_keys=[engineer_id])

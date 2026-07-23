@@ -56,7 +56,6 @@ export const Warehouse: React.FC = () => {
     resolver: zodResolver(warehouseSchema),
   });
 
-  // Query warehouse items
   const { data: items = [], isLoading } = useQuery<WarehouseItem[]>({
     queryKey: ["warehouse", page, rowsPerPage],
     queryFn: async () => {
@@ -65,7 +64,6 @@ export const Warehouse: React.FC = () => {
     },
   });
 
-  // Mutations
   const createMutation = useMutation({
     mutationFn: (data: WarehouseFormData) => api.post("/v1/warehouse", data),
     onSuccess: () => {
@@ -205,7 +203,7 @@ export const Warehouse: React.FC = () => {
         onRowsPerPageChange={setRowsPerPage}
       />
 
-      {/* Warehouse Dialog */}
+      {}
       <Dialog open={isFormOpen} onClose={() => setIsFormOpen(false)} maxWidth="xs" fullWidth>
         <DialogTitle>{editingItem ? "Редактировать позицию" : "Оприходовать запчасть"}</DialogTitle>
         <form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -226,7 +224,7 @@ export const Warehouse: React.FC = () => {
         </form>
       </Dialog>
 
-      {/* Delete Confirmation */}
+      {}
       <ConfirmDialog
         open={deleteConfirmOpen}
         title="Списание запчасти"

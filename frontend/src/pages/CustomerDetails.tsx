@@ -55,7 +55,6 @@ export const CustomerDetails: React.FC = () => {
     resolver: zodResolver(carSchema),
   });
 
-  // Query Customer Profile
   const { data: customer, isLoading: isLoadingCustomer } = useQuery<Customer>({
     queryKey: ["customer", id],
     queryFn: async () => {
@@ -64,7 +63,6 @@ export const CustomerDetails: React.FC = () => {
     },
   });
 
-  // Query Cars
   const { data: cars = [] } = useQuery<Car[]>({
     queryKey: ["customer-cars", id],
     queryFn: async () => {
@@ -73,7 +71,6 @@ export const CustomerDetails: React.FC = () => {
     },
   });
 
-  // Query Orders
   const { data: orders = [] } = useQuery<Order[]>({
     queryKey: ["customer-orders", id],
     queryFn: async () => {
@@ -82,7 +79,6 @@ export const CustomerDetails: React.FC = () => {
     },
   });
 
-  // Mutation: Register Car
   const createCarMutation = useMutation({
     mutationFn: (data: CarFormData) => api.post("/v1/cars", { ...data, customer_id: id }),
     onSuccess: () => {
@@ -127,7 +123,7 @@ export const CustomerDetails: React.FC = () => {
       </Paper>
 
       <Grid container spacing={4}>
-        {/* Cars List */}
+        {}
         <Grid size={{ xs: 12, md: 6 }}>
           <Paper sx={{ p: 3, borderRadius: 3 }}>
             <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center", mb: 2 }}>
@@ -157,7 +153,7 @@ export const CustomerDetails: React.FC = () => {
           </Paper>
         </Grid>
 
-        {/* Orders List */}
+        {}
         <Grid size={{ xs: 12, md: 6 }}>
           <Paper sx={{ p: 3, borderRadius: 3 }}>
             <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>История заказ-нарядов</Typography>
@@ -181,7 +177,7 @@ export const CustomerDetails: React.FC = () => {
         </Grid>
       </Grid>
 
-      {/* Register Car Modal */}
+      {}
       <Dialog open={isCarModalOpen} onClose={() => setIsCarModalOpen(false)} maxWidth="xs" fullWidth>
         <DialogTitle>Зарегистрировать автомобиль</DialogTitle>
         <form onSubmit={handleSubmit(handleCarSubmit)}>

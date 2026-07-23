@@ -55,7 +55,6 @@ export const Users: React.FC = () => {
     resolver: zodResolver(userCreateSchema),
   });
 
-  // Query staff users
   const { data: users = [], isLoading } = useQuery<User[]>({
     queryKey: ["users", page, rowsPerPage],
     queryFn: async () => {
@@ -64,7 +63,6 @@ export const Users: React.FC = () => {
     },
   });
 
-  // Mutations
   const createMutation = useMutation({
     mutationFn: (data: UserCreateFormData) => api.post("/v1/users", data),
     onSuccess: () => {
@@ -112,7 +110,7 @@ export const Users: React.FC = () => {
     setValue("email", user.email);
     setValue("full_name", user.full_name || "");
     setValue("role", user.role);
-    setValue("password", ""); // don't prefill password
+    setValue("password", "");
     setIsFormOpen(true);
   };
 
@@ -217,7 +215,7 @@ export const Users: React.FC = () => {
         onRowsPerPageChange={setRowsPerPage}
       />
 
-      {/* User Dialog */}
+      {}
       <Dialog open={isFormOpen} onClose={() => setIsFormOpen(false)} maxWidth="xs" fullWidth>
         <DialogTitle>{editingUser ? "Редактировать сотрудника" : "Добавить сотрудника"}</DialogTitle>
         <form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -249,7 +247,7 @@ export const Users: React.FC = () => {
         </form>
       </Dialog>
 
-      {/* Delete Confirmation */}
+      {}
       <ConfirmDialog
         open={deleteConfirmOpen}
         title="Удаление учетной записи"

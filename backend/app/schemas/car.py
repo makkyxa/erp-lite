@@ -3,7 +3,6 @@ import uuid
 from pydantic import BaseModel, Field, field_validator
 from app.utils.validators import validate_vin
 
-
 class CarBase(BaseModel):
     customer_id: uuid.UUID
     brand: str = Field(..., min_length=1, max_length=100)
@@ -21,10 +20,8 @@ class CarBase(BaseModel):
     def clean_and_validate_vin(cls, v: str) -> str:
         return validate_vin(v)
 
-
 class CarCreate(CarBase):
     pass
-
 
 class CarUpdate(BaseModel):
     brand: Optional[str] = Field(None, min_length=1, max_length=100)
@@ -43,7 +40,6 @@ class CarUpdate(BaseModel):
         if v is not None:
             return validate_vin(v)
         return v
-
 
 class CarResponse(CarBase):
     id: uuid.UUID

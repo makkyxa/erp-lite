@@ -6,18 +6,15 @@ from sqlalchemy import CheckConstraint, DateTime, Enum, ForeignKey, Numeric, Str
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.database import Base
 
-
 class PaymentMethod(str, enum.Enum):
     CASH = "CASH"
     CARD = "CARD"
     BANK_TRANSFER = "BANK_TRANSFER"
 
-
 class PaymentStatus(str, enum.Enum):
     PENDING = "PENDING"
     COMPLETED = "COMPLETED"
     REFUNDED = "REFUNDED"
-
 
 class Payment(Base):
     __tablename__ = "payments"
@@ -45,7 +42,6 @@ class Payment(Base):
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False
     )
 
-    # Relationships
     order: Mapped["Order"] = relationship(back_populates="payments")
     collector: Mapped["User"] = relationship()
 

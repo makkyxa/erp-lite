@@ -9,7 +9,6 @@ from app.services.warehouse_service import WarehouseService
 
 router = APIRouter(prefix="/warehouse", tags=["Warehouse"])
 
-
 @router.get("", response_model=List[WarehouseItemResponse], summary="Get warehouse inventory")
 async def get_warehouse_items(
     skip: int = 0,
@@ -17,13 +16,8 @@ async def get_warehouse_items(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
-    """
-    Retrieve list of inventory items.
-    Accessible to all active staff.
-    """
     warehouse_service = WarehouseService(db)
     return await warehouse_service.get_items(skip=skip, limit=limit)
-
 
 @router.post(
     "", 
@@ -37,13 +31,8 @@ async def create_warehouse_item(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
-    """
-    Add a new item to the warehouse stock.
-    Accessible to ADMIN and MANAGER.
-    """
     warehouse_service = WarehouseService(db)
     return await warehouse_service.create_item(item_in, creator_id=current_user.id)
-
 
 @router.get("/{id}", response_model=WarehouseItemResponse, summary="Get warehouse item details")
 async def get_warehouse_item(
@@ -51,13 +40,8 @@ async def get_warehouse_item(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
-    """
-    Retrieve specific inventory item details by ID.
-    Accessible to all active staff.
-    """
     warehouse_service = WarehouseService(db)
     return await warehouse_service.get_item(id)
-
 
 @router.put(
     "/{id}", 
@@ -70,13 +54,8 @@ async def update_warehouse_item(
     item_in: WarehouseItemUpdate,
     db: AsyncSession = Depends(get_db)
 ):
-    """
-    Update details of an item in the warehouse.
-    Accessible to ADMIN and MANAGER.
-    """
     warehouse_service = WarehouseService(db)
     return await warehouse_service.update_item(id, item_in)
-
 
 @router.delete(
     "/{id}", 
@@ -87,10 +66,6 @@ async def delete_warehouse_item(
     id: uuid.UUID,
     db: AsyncSession = Depends(get_db)
 ):
-    """
-    Remove an item from warehouse stock list.
-    Accessible to ADMIN and MANAGER.
-    """
     warehouse_service = WarehouseService(db)
     await warehouse_service.delete_item(id)
     return {"success": True, "detail": "Warehouse item deleted successfully"}

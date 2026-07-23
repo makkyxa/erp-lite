@@ -9,7 +9,6 @@ from app.services.service_service import ServiceService
 
 router = APIRouter(prefix="/services", tags=["Services"])
 
-
 @router.get("", response_model=List[ServiceResponse], summary="Get services catalog")
 async def get_services(
     skip: int = 0,
@@ -17,13 +16,8 @@ async def get_services(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
-    """
-    Retrieve standard services catalog list.
-    Accessible to all active staff.
-    """
     service_service = ServiceService(db)
     return await service_service.get_services(skip=skip, limit=limit)
-
 
 @router.post(
     "", 
@@ -36,13 +30,8 @@ async def create_service(
     service_in: ServiceCreate,
     db: AsyncSession = Depends(get_db)
 ):
-    """
-    Register a new service in the catalog.
-    Accessible to ADMIN and MANAGER.
-    """
     service_service = ServiceService(db)
     return await service_service.create_service(service_in)
-
 
 @router.get("/{id}", response_model=ServiceResponse, summary="Get service details")
 async def get_service(
@@ -50,13 +39,8 @@ async def get_service(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
-    """
-    Retrieve service specifications by ID.
-    Accessible to all active staff.
-    """
     service_service = ServiceService(db)
     return await service_service.get_service(id)
-
 
 @router.put(
     "/{id}", 
@@ -69,13 +53,8 @@ async def update_service(
     service_in: ServiceUpdate,
     db: AsyncSession = Depends(get_db)
 ):
-    """
-    Update service details.
-    Accessible to ADMIN and MANAGER.
-    """
     service_service = ServiceService(db)
     return await service_service.update_service(id, service_in)
-
 
 @router.delete(
     "/{id}", 
@@ -86,10 +65,6 @@ async def delete_service(
     id: uuid.UUID,
     db: AsyncSession = Depends(get_db)
 ):
-    """
-    Remove service from database catalog.
-    Accessible to ADMIN and MANAGER.
-    """
     service_service = ServiceService(db)
     await service_service.delete_service(id)
     return {"success": True, "detail": "Service deleted successfully"}

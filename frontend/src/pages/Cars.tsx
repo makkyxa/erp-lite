@@ -58,7 +58,6 @@ export const Cars: React.FC = () => {
     resolver: zodResolver(carSchema),
   });
 
-  // Query Cars
   const { data: cars = [], isLoading } = useQuery<Car[]>({
     queryKey: ["cars", page, rowsPerPage],
     queryFn: async () => {
@@ -67,7 +66,6 @@ export const Cars: React.FC = () => {
     },
   });
 
-  // Query Customers list for selector
   const { data: customers = [] } = useQuery<Customer[]>({
     queryKey: ["all-customers-list"],
     queryFn: async () => {
@@ -76,7 +74,6 @@ export const Cars: React.FC = () => {
     },
   });
 
-  // Mutations
   const createMutation = useMutation({
     mutationFn: (data: CarFormData) => api.post("/v1/cars", data),
     onSuccess: () => {
@@ -203,7 +200,7 @@ export const Cars: React.FC = () => {
         onRowsPerPageChange={setRowsPerPage}
       />
 
-      {/* Car Dialog */}
+      {}
       <Dialog open={isFormOpen} onClose={() => setIsFormOpen(false)} maxWidth="xs" fullWidth>
         <DialogTitle>{editingCar ? "Редактировать автомобиль" : "Добавить автомобиль"}</DialogTitle>
         <form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -239,7 +236,7 @@ export const Cars: React.FC = () => {
         </form>
       </Dialog>
 
-      {/* Delete Confirmation */}
+      {}
       <ConfirmDialog
         open={deleteConfirmOpen}
         title="Удаление авто"

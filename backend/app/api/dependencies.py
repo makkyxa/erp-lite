@@ -11,14 +11,11 @@ from app.core.exceptions import UnauthorizedException, ForbiddenException, NotFo
 from app.models.user import User, UserRole
 from app.repositories.user_repository import UserRepository
 
-# OAuth2 scheme configures token endpoint path
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/api/v1/auth/login"
 )
 
-
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
-    """Dependency for fetching a database session."""
     async with SessionLocal() as session:
         try:
             yield session
@@ -27,12 +24,10 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
             await session.rollback()
             raise
 
-
 async def get_current_user(
     db: AsyncSession = Depends(get_db),
     token: str = Depends(oauth2_scheme)
 ) -> User:
-    """Decode token, validate it, and retrieve current user."""
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
         token_type = payload.get("type")
@@ -52,18 +47,14 @@ async def get_current_user(
     
     return user
 
-
 async def get_current_active_user(
     current_user: User = Depends(get_current_user)
 ) -> User:
-    """Ensure retrieved user is active."""
     if not current_user.is_active:
         raise ForbiddenException("Inactive user account")
     return current_user
 
-
 class RoleChecker:
-    """Dependency class to authorize based on user role."""
     def __init__(self, allowed_roles: List[UserRole]):
         self.allowed_roles = allowed_roles
 

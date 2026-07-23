@@ -4,7 +4,6 @@ from sqlalchemy import DateTime, ForeignKey, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.database import Base
 
-
 class Comment(Base):
     __tablename__ = "order_comments"
 
@@ -24,6 +23,5 @@ class Comment(Base):
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False
     )
 
-    # Relationships
     order: Mapped["Order"] = relationship(back_populates="comments")
     author: Mapped["User"] = relationship()

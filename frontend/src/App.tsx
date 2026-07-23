@@ -6,10 +6,8 @@ import { AuthProvider, useAuth } from "./hooks/useAuth";
 import { ToastProvider } from "./hooks/useToast";
 import { UserRole } from "./types";
 
-// Layout
 import Layout from "./layout/Layout";
 
-// Pages
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Customers from "./pages/Customers";
@@ -37,10 +35,10 @@ const queryClient = new QueryClient({
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#3b82f6", // Blue
+      main: "#3b82f6",
     },
     secondary: {
-      main: "#8b5cf6", // Purple
+      main: "#8b5cf6",
     },
     background: {
       default: "#f8fafc",
@@ -90,10 +88,10 @@ function App() {
           <ToastProvider>
             <BrowserRouter>
               <Routes>
-                {/* Public Route */}
+                {}
                 <Route path="/login" element={<Login />} />
 
-                {/* Protected Routes */}
+                {}
                 <Route
                   path="/"
                   element={
@@ -110,7 +108,7 @@ function App() {
                   <Route path="orders/:id" element={<OrderDetails />} />
                   <Route path="warehouse" element={<Warehouse />} />
                   
-                  {/* Write restricted routes */}
+                  {}
                   <Route
                     path="services"
                     element={
@@ -128,7 +126,7 @@ function App() {
                     }
                   />
                   
-                  {/* Admin-only routes */}
+                  {}
                   <Route
                     path="users"
                     element={
@@ -142,7 +140,7 @@ function App() {
                   <Route path="settings" element={<Settings />} />
                 </Route>
 
-                {/* 404 Route */}
+                {}
                 <Route path="/404" element={<NotFound />} />
                 <Route path="*" element={<Navigate to="/404" replace />} />
               </Routes>

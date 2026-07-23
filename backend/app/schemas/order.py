@@ -4,7 +4,6 @@ import uuid
 from pydantic import BaseModel, Field, field_validator
 from app.models.order import OrderPriority, OrderStatus
 
-
 class OrderBase(BaseModel):
     customer_id: uuid.UUID
     car_id: uuid.UUID
@@ -22,10 +21,8 @@ class OrderBase(BaseModel):
             raise ValueError("Price must be greater than or equal to 0")
         return v
 
-
 class OrderCreate(OrderBase):
     pass
-
 
 class OrderUpdate(BaseModel):
     engineer_id: Optional[uuid.UUID] = None
@@ -36,7 +33,6 @@ class OrderUpdate(BaseModel):
     price: Optional[float] = Field(None, ge=0.0)
     started_at: Optional[datetime] = None
     finished_at: Optional[datetime] = None
-
 
 class OrderResponse(OrderBase):
     id: uuid.UUID

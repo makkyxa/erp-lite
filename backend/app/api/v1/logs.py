@@ -12,7 +12,6 @@ router = APIRouter(
     dependencies=[Depends(RoleChecker([UserRole.ADMIN]))]
 )
 
-
 @router.get("", summary="Get system audit logs")
 async def get_logs(
     skip: int = 0,
@@ -21,11 +20,5 @@ async def get_logs(
     action: Optional[str] = Query(None),
     db: AsyncSession = Depends(get_db)
 ):
-    """
-    Retrieve audit history of CRUD actions, authorizations, status shifts.
-    Only ADMIN allowed.
-    """
     log_repo = LogRepository(db)
-    # Return audit logs with optional filter
-    # To keep it generic and reliable:
     return await log_repo.get_multi(skip=skip, limit=limit)

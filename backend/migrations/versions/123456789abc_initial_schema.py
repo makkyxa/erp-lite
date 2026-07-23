@@ -1,23 +1,13 @@
-"""Initial schema
-
-Revision ID: 123456789abc
-Revises: 
-Create Date: 2026-07-05 14:15:00.000000
-
-"""
 from typing import Sequence, Union
 from alembic import op
 import sqlalchemy as sa
 
-# revision identifiers, used by Alembic.
 revision: str = "123456789abc"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
-
 def upgrade() -> None:
-    # 1. Create users table
     op.create_table(
         "users",
         sa.Column("id", sa.UUID(), nullable=False),
@@ -35,7 +25,6 @@ def upgrade() -> None:
     op.create_index(op.f("ix_users_email"), "users", ["email"], unique=True)
     op.create_index(op.f("ix_users_role"), "users", ["role"], unique=False)
 
-    # 2. Create customers table
     op.create_table(
         "customers",
         sa.Column("id", sa.UUID(), nullable=False),
@@ -52,7 +41,6 @@ def upgrade() -> None:
     op.create_index(op.f("ix_customers_full_name"), "customers", ["full_name"], unique=False)
     op.create_index(op.f("ix_customers_phone"), "customers", ["phone"], unique=True)
 
-    # 3. Create cars table
     op.create_table(
         "cars",
         sa.Column("id", sa.UUID(), nullable=False),
@@ -77,7 +65,6 @@ def upgrade() -> None:
     op.create_index(op.f("ix_cars_vin"), "cars", ["vin"], unique=True)
     op.create_index(op.f("ix_cars_license_plate"), "cars", ["license_plate"], unique=False)
 
-    # 4. Create orders table
     op.create_table(
         "orders",
         sa.Column("id", sa.UUID(), nullable=False),
@@ -116,7 +103,6 @@ def upgrade() -> None:
     op.create_index(op.f("ix_orders_status"), "orders", ["status"], unique=False)
     op.create_index(op.f("ix_orders_created_at"), "orders", ["created_at"], unique=False)
 
-    # 5. Create order_comments table
     op.create_table(
         "order_comments",
         sa.Column("id", sa.UUID(), nullable=False),
@@ -130,7 +116,6 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id")
     )
 
-    # 6. Create order_photos table
     op.create_table(
         "order_photos",
         sa.Column("id", sa.UUID(), nullable=False),
@@ -144,7 +129,6 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id")
     )
 
-    # 7. Create activity_logs table
     op.create_table(
         "activity_logs",
         sa.Column("id", sa.UUID(), nullable=False),
@@ -162,7 +146,6 @@ def upgrade() -> None:
     )
     op.create_index(op.f("ix_activity_logs_user_id"), "activity_logs", ["user_id"], unique=False)
 
-    # 8. Create warehouse_items table
     op.create_table(
         "warehouse_items",
         sa.Column("id", sa.UUID(), nullable=False),
@@ -183,7 +166,6 @@ def upgrade() -> None:
     )
     op.create_index(op.f("ix_warehouse_items_sku"), "warehouse_items", ["sku"], unique=True)
 
-    # 9. Create services catalog table
     op.create_table(
         "services",
         sa.Column("id", sa.UUID(), nullable=False),
@@ -196,7 +178,6 @@ def upgrade() -> None:
         sa.CheckConstraint("price >= 0.0", name="check_service_price_positive")
     )
 
-    # 10. Create order_services table
     op.create_table(
         "order_services",
         sa.Column("id", sa.UUID(), nullable=False),
@@ -215,7 +196,6 @@ def upgrade() -> None:
     op.create_index(op.f("ix_order_services_order_id"), "order_services", ["order_id"], unique=False)
     op.create_index(op.f("ix_order_services_service_id"), "order_services", ["service_id"], unique=False)
 
-    # 11. Create order_parts table
     op.create_table(
         "order_parts",
         sa.Column("id", sa.UUID(), nullable=False),
@@ -234,7 +214,6 @@ def upgrade() -> None:
     op.create_index(op.f("ix_order_parts_order_id"), "order_parts", ["order_id"], unique=False)
     op.create_index(op.f("ix_order_parts_part_id"), "order_parts", ["part_id"], unique=False)
 
-    # 12. Create payments table
     op.create_table(
         "payments",
         sa.Column("id", sa.UUID(), nullable=False),
@@ -252,7 +231,6 @@ def upgrade() -> None:
         sa.CheckConstraint("amount > 0.0", name="check_payment_amount_positive")
     )
     op.create_index(op.f("ix_payments_order_id"), "payments", ["order_id"], unique=False)
-
 
 def downgrade() -> None:
     op.drop_index(op.f("ix_payments_order_id"), table_name="payments")
@@ -298,7 +276,6 @@ def downgrade() -> None:
     op.drop_index(op.f("ix_users_username"), table_name="users")
     op.drop_table("users")
 
-    # Drop enum types in PostgreSQL to avoid namespace clutter
     sa.Enum(name="userrole").drop(op.get_bind(), checkfirst=True)
     sa.Enum(name="orderstatus").drop(op.get_bind(), checkfirst=True)
     sa.Enum(name="orderpriority").drop(op.get_bind(), checkfirst=True)

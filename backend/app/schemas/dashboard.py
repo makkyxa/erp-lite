@@ -1,7 +1,6 @@
 from typing import Any, List
 from pydantic import BaseModel
 
-
 class DashboardStatsResponse(BaseModel):
     customers: int
     cars: int

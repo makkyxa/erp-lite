@@ -54,7 +54,6 @@ export const Payments: React.FC = () => {
     },
   });
 
-  // Query payments registry
   const { data: payments = [], isLoading } = useQuery<Payment[]>({
     queryKey: ["payments", page, rowsPerPage],
     queryFn: async () => {
@@ -63,7 +62,6 @@ export const Payments: React.FC = () => {
     },
   });
 
-  // Query active orders list
   const { data: orders = [] } = useQuery<Order[]>({
     queryKey: ["all-orders-payments"],
     queryFn: async () => {
@@ -72,7 +70,6 @@ export const Payments: React.FC = () => {
     },
   });
 
-  // Mutation: Log payment
   const createMutation = useMutation({
     mutationFn: (data: PaymentFormData) => {
       const payload = {
@@ -91,7 +88,6 @@ export const Payments: React.FC = () => {
     onError: (err: any) => showError(err.response?.data?.detail || "Ошибка при регистрации платежа"),
   });
 
-  // Mutation: Update payment
   const updateMutation = useMutation({
     mutationFn: (data: PaymentFormData & { id: string }) =>
       api.put(`/v1/payments/${data.id}`, data),
@@ -106,7 +102,6 @@ export const Payments: React.FC = () => {
     onError: (err: any) => showError(err.response?.data?.detail || "Ошибка при обновлении платежа"),
   });
 
-  // Mutation: Delete payment
   const deleteMutation = useMutation({
     mutationFn: (id: string) => api.delete(`/v1/payments/${id}`),
     onSuccess: () => {
@@ -231,7 +226,7 @@ export const Payments: React.FC = () => {
         onRowsPerPageChange={setRowsPerPage}
       />
 
-      {/* Payment Dialog */}
+      {}
       <Dialog open={isFormOpen} onClose={() => setIsFormOpen(false)} maxWidth="xs" fullWidth>
         <DialogTitle>{editingPayment ? "Редактировать платеж" : "Зарегистрировать платеж"}</DialogTitle>
         <form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -287,7 +282,7 @@ export const Payments: React.FC = () => {
         </form>
       </Dialog>
 
-      {/* Delete Confirmation */}
+      {}
       <ConfirmDialog
         open={deleteConfirmOpen}
         title="Удаление платежа"

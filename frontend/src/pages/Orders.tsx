@@ -62,7 +62,6 @@ export const Orders: React.FC = () => {
 
   const selectedCustomerId = watch("customer_id");
 
-  // Query Orders
   const { data: orders = [], isLoading } = useQuery<Order[]>({
     queryKey: ["orders", page, rowsPerPage],
     queryFn: async () => {
@@ -71,7 +70,6 @@ export const Orders: React.FC = () => {
     },
   });
 
-  // Query Customers list
   const { data: customers = [] } = useQuery<Customer[]>({
     queryKey: ["all-customers"],
     queryFn: async () => {
@@ -80,7 +78,6 @@ export const Orders: React.FC = () => {
     },
   });
 
-  // Query Cars list
   const { data: cars = [] } = useQuery<Car[]>({
     queryKey: ["all-cars"],
     queryFn: async () => {
@@ -89,7 +86,6 @@ export const Orders: React.FC = () => {
     },
   });
 
-  // Query Engineers list
   const { data: users = [] } = useQuery<User[]>({
     queryKey: ["all-users"],
     queryFn: async () => {
@@ -99,10 +95,8 @@ export const Orders: React.FC = () => {
     enabled: user?.role === UserRole.ADMIN,
   });
 
-  // Filter cars depending on selected customer
   const filteredCarsForSelect = cars.filter((c) => c.customer_id === selectedCustomerId);
 
-  // Mutations
   const createMutation = useMutation({
     mutationFn: (data: OrderFormData) => {
       const payload = {
@@ -241,7 +235,7 @@ export const Orders: React.FC = () => {
         onRowsPerPageChange={setRowsPerPage}
       />
 
-      {/* Order Creation Dialog */}
+      {}
       <Dialog open={isFormOpen} onClose={() => setIsFormOpen(false)} maxWidth="xs" fullWidth>
         <DialogTitle>Новый заказ-наряд</DialogTitle>
         <form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -337,7 +331,7 @@ export const Orders: React.FC = () => {
         </form>
       </Dialog>
 
-      {/* Delete Confirmation */}
+      {}
       <ConfirmDialog
         open={deleteConfirmOpen}
         title="Удаление заказа"

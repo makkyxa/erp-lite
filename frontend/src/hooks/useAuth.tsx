@@ -25,7 +25,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (token && savedUser) {
         try {
           setUser(JSON.parse(savedUser));
-          // Optionally verify token / fetch fresh profile on startup
           const response = await api.get("/v1/auth/me");
           setUser(response.data);
           localStorage.setItem("user", JSON.stringify(response.data));

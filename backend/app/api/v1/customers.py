@@ -9,7 +9,6 @@ from app.services.customer_service import CustomerService
 
 router = APIRouter(prefix="/customers", tags=["Customers"])
 
-
 @router.get("", response_model=List[CustomerResponse], summary="Get customers list")
 async def get_customers(
     skip: int = 0,
@@ -17,13 +16,8 @@ async def get_customers(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
-    """
-    Retrieve clients list with pagination.
-    Accessible to all logged in staff.
-    """
     customer_service = CustomerService(db)
     return await customer_service.get_customers(skip=skip, limit=limit)
-
 
 @router.post(
     "", 
@@ -37,13 +31,8 @@ async def create_customer(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
-    """
-    Create a new customer profile.
-    Accessible to ADMIN and MANAGER.
-    """
     customer_service = CustomerService(db)
     return await customer_service.create_customer(customer_in, creator_id=current_user.id)
-
 
 @router.get("/{id}", response_model=CustomerResponse, summary="Get customer details")
 async def get_customer(
@@ -51,13 +40,8 @@ async def get_customer(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
-    """
-    Retrieve a customer details by unique ID.
-    Accessible to all logged in staff.
-    """
     customer_service = CustomerService(db)
     return await customer_service.get_customer(id)
-
 
 @router.put(
     "/{id}", 
@@ -70,13 +54,8 @@ async def update_customer(
     customer_in: CustomerUpdate,
     db: AsyncSession = Depends(get_db)
 ):
-    """
-    Update customer profile details.
-    Accessible to ADMIN and MANAGER.
-    """
     customer_service = CustomerService(db)
     return await customer_service.update_customer(id, customer_in)
-
 
 @router.delete(
     "/{id}", 
@@ -87,11 +66,6 @@ async def delete_customer(
     id: uuid.UUID,
     db: AsyncSession = Depends(get_db)
 ):
-    """
-    Delete customer profile.
-    Raises Conflict if active orders exist.
-    Accessible to ADMIN and MANAGER.
-    """
     customer_service = CustomerService(db)
     await customer_service.delete_customer(id)
     return {"success": True, "detail": "Customer deleted successfully"}

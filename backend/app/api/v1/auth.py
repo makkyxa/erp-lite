@@ -13,16 +13,11 @@ from app.services.auth_service import AuthService
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
-
 @router.post("/login", response_model=Token, summary="User login")
 async def login(
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: AsyncSession = Depends(get_db)
 ):
-    """
-    Authenticate user and return access & refresh JWT tokens.
-    Supports standard OAuth2 / Swagger authentication flow.
-    """
     auth_service = AuthService(db)
     user = await auth_service.authenticate_user(
         username=form_data.username,
@@ -38,15 +33,11 @@ async def login(
         "token_type": "bearer"
     }
 
-
 @router.post("/refresh", response_model=Token, summary="Refresh access token")
 async def refresh_token(
     refresh_token: str,
     db: AsyncSession = Depends(get_db)
 ):
-    """
-    Get a new access token using a valid refresh token.
-    """
     payload = decode_token(refresh_token)
     token_type = payload.get("type")
     if token_type != "refresh":
@@ -65,20 +56,12 @@ async def refresh_token(
         "token_type": "bearer"
     }
 
-
 @router.get("/me", response_model=UserResponse, summary="Get current user")
 async def get_me(
     current_user: User = Depends(get_current_active_user)
 ):
-    """
-    Return the profile of the currently logged in active user.
-    """
     return current_user
-
 
 @router.post("/logout", summary="Logout user")
 async def logout():
-    """
-    Invalidate refresh token and logout user.
-    """
     return {"success": True, "detail": "Successfully logged out"}

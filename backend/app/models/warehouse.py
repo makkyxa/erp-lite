@@ -5,7 +5,6 @@ from sqlalchemy import CheckConstraint, DateTime, ForeignKey, Numeric, String, I
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.database import Base
 
-
 class WarehouseItem(Base):
     __tablename__ = "warehouse_items"
 
@@ -28,7 +27,6 @@ class WarehouseItem(Base):
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False
     )
 
-    # Relationships
     creator: Mapped[Optional["User"]] = relationship()
 
     __table_args__ = (

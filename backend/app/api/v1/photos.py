@@ -11,16 +11,11 @@ router = APIRouter(
     dependencies=[Depends(RoleChecker([UserRole.ADMIN, UserRole.MANAGER]))]
 )
 
-
 @router.delete("/{id}", summary="Delete photo")
 async def delete_photo(
     id: uuid.UUID,
     db: AsyncSession = Depends(get_db)
 ):
-    """
-    Remove a specific photo record.
-    Accessible to ADMIN and MANAGER.
-    """
     photo_service = PhotoService(db)
     await photo_service.delete_photo(id)
     return {"success": True, "detail": "Photo deleted successfully"}

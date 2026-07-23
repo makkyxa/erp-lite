@@ -52,7 +52,6 @@ export const Customers: React.FC = () => {
 
   const isWriteAllowed = user?.role === UserRole.ADMIN || user?.role === UserRole.MANAGER;
 
-  // Form setup
   const {
     register,
     handleSubmit,
@@ -63,7 +62,6 @@ export const Customers: React.FC = () => {
     resolver: zodResolver(customerSchema),
   });
 
-  // Query customers
   const { data: customers = [], isLoading } = useQuery<Customer[]>({
     queryKey: ["customers", page, rowsPerPage],
     queryFn: async () => {
@@ -72,7 +70,6 @@ export const Customers: React.FC = () => {
     },
   });
 
-  // Mutation: Create Customer
   const createMutation = useMutation({
     mutationFn: (data: CustomerFormData) => api.post("/v1/customers", data),
     onSuccess: () => {
@@ -86,7 +83,6 @@ export const Customers: React.FC = () => {
     },
   });
 
-  // Mutation: Update Customer
   const updateMutation = useMutation({
     mutationFn: (data: CustomerFormData & { id: string }) =>
       api.put(`/v1/customers/${data.id}`, data),
@@ -102,7 +98,6 @@ export const Customers: React.FC = () => {
     },
   });
 
-  // Mutation: Delete Customer
   const deleteMutation = useMutation({
     mutationFn: (id: string) => api.delete(`/v1/customers/${id}`),
     onSuccess: () => {
@@ -213,7 +208,7 @@ export const Customers: React.FC = () => {
         onRowsPerPageChange={setRowsPerPage}
       />
 
-      {/* Customer Dialog */}
+      {}
       <Dialog open={isFormOpen} onClose={() => setIsFormOpen(false)} maxWidth="xs" fullWidth>
         <DialogTitle>{editingCustomer ? "Редактировать клиента" : "Добавить клиента"}</DialogTitle>
         <form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -260,7 +255,7 @@ export const Customers: React.FC = () => {
         </form>
       </Dialog>
 
-      {/* Delete Confirmation */}
+      {}
       <ConfirmDialog
         open={deleteConfirmOpen}
         title="Удаление клиента"

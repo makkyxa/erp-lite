@@ -4,7 +4,6 @@ from sqlalchemy import CheckConstraint, DateTime, ForeignKey, Integer, Numeric, 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.database import Base
 
-
 class OrderPart(Base):
     __tablename__ = "order_parts"
 
@@ -25,7 +24,6 @@ class OrderPart(Base):
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False
     )
 
-    # Relationships
     order: Mapped["Order"] = relationship(back_populates="parts")
     part: Mapped["WarehouseItem"] = relationship()
 

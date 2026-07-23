@@ -5,12 +5,10 @@ from sqlalchemy import DateTime, Enum, ForeignKey, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.database import Base
 
-
 class PhotoType(str, enum.Enum):
     BEFORE = "BEFORE"
     AFTER = "AFTER"
     DOCUMENT = "DOCUMENT"
-
 
 class Photo(Base):
     __tablename__ = "order_photos"
@@ -32,5 +30,4 @@ class Photo(Base):
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False
     )
 
-    # Relationships
     order: Mapped["Order"] = relationship(back_populates="photos")

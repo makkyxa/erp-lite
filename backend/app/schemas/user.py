@@ -3,7 +3,6 @@ import uuid
 from pydantic import BaseModel, EmailStr, Field
 from app.models.user import UserRole
 
-
 class UserBase(BaseModel):
     username: str = Field(..., min_length=3, max_length=50)
     email: EmailStr
@@ -11,10 +10,8 @@ class UserBase(BaseModel):
     role: UserRole = UserRole.ENGINEER
     is_active: bool = True
 
-
 class UserCreate(UserBase):
     password: str = Field(..., min_length=6)
-
 
 class UserUpdate(BaseModel):
     email: Optional[EmailStr] = None
@@ -23,13 +20,11 @@ class UserUpdate(BaseModel):
     role: Optional[UserRole] = None
     is_active: Optional[bool] = None
 
-
 class UserResponse(UserBase):
     id: uuid.UUID
 
     class Config:
         from_attributes = True
-
 
 class UserLogin(BaseModel):
     username: str

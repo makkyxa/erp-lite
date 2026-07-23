@@ -5,20 +5,14 @@ from app.schemas.user import UserCreate
 from app.core.security import verify_password, get_password_hash
 from app.core.exceptions import UnauthorizedException, ConflictException
 
-
 class AuthService:
     def __init__(self, db: AsyncSession):
         self.db = db
         self.user_repo = UserRepository(db)
 
     async def authenticate_user(self, username: str, password: str) -> User:
-        """
-        Authenticate a user by username and password.
-        Returns the User object if successful, raises UnauthorizedException otherwise.
-        """
         user = await self.user_repo.get_by_username(username)
         if not user:
-            # Fallback to check by email
             user = await self.user_repo.get_by_email(username)
             if not user:
                 raise UnauthorizedException("Invalid username or password")
@@ -32,20 +26,14 @@ class AuthService:
         return user
 
     async def register_user(self, user_in: UserCreate) -> User:
-        """
-        Register a new user, hash password and save to DB.
-        """
-        # Check if username already exists
         existing_user = await self.user_repo.get_by_username(user_in.username)
         if existing_user:
             raise ConflictException("Username is already registered")
 
-        # Check if email already exists
         existing_email = await self.user_repo.get_by_email(user_in.email)
         if existing_email:
             raise ConflictException("Email is already registered")
 
-        # Hash the password
         user_data = user_in.model_dump()
         password = user_data.pop("password")
         user_data["password_hash"] = get_password_hash(password)

@@ -53,7 +53,6 @@ export const Services: React.FC = () => {
     resolver: zodResolver(serviceSchema),
   });
 
-  // Query catalog services
   const { data: services = [], isLoading } = useQuery<Service[]>({
     queryKey: ["services", page, rowsPerPage],
     queryFn: async () => {
@@ -62,7 +61,6 @@ export const Services: React.FC = () => {
     },
   });
 
-  // Mutations
   const createMutation = useMutation({
     mutationFn: (data: ServiceFormData) => api.post("/v1/services", data),
     onSuccess: () => {
@@ -184,7 +182,7 @@ export const Services: React.FC = () => {
         onRowsPerPageChange={setRowsPerPage}
       />
 
-      {/* Service Dialog */}
+      {}
       <Dialog open={isFormOpen} onClose={() => setIsFormOpen(false)} maxWidth="xs" fullWidth>
         <DialogTitle>{editingService ? "Редактировать услугу" : "Добавить услугу"}</DialogTitle>
         <form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -202,7 +200,7 @@ export const Services: React.FC = () => {
         </form>
       </Dialog>
 
-      {/* Delete Confirmation */}
+      {}
       <ConfirmDialog
         open={deleteConfirmOpen}
         title="Удаление услуги из каталога"

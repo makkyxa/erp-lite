@@ -41,7 +41,6 @@ export const Login: React.FC = () => {
     setIsLoading(true);
     setError(null);
     try {
-      // Build form-data payload for OAuth2PasswordRequestForm compatibility
       const formData = new FormData();
       formData.append("username", data.username);
       formData.append("password", data.password);
@@ -54,7 +53,6 @@ export const Login: React.FC = () => {
 
       const { access_token, refresh_token } = response.data;
 
-      // Extract user profile details
       const userProfileResponse = await api.get("/v1/auth/me", {
         headers: {
           Authorization: `Bearer ${access_token}`,

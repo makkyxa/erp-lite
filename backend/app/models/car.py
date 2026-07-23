@@ -4,7 +4,6 @@ from sqlalchemy import CheckConstraint, DateTime, ForeignKey, Integer, String, T
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.database import Base
 
-
 class Car(Base):
     __tablename__ = "cars"
 
@@ -29,7 +28,6 @@ class Car(Base):
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False
     )
 
-    # Relationships
     customer: Mapped["Customer"] = relationship(back_populates="cars")
     orders: Mapped[list["Order"]] = relationship(back_populates="car")
 

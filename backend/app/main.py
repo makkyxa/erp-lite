@@ -6,10 +6,8 @@ from app.core.exceptions import setup_exception_handlers
 from app.core.logger import setup_logging
 from app.middleware import CombinedASGIMiddleware
 
-# Setup system logging configuration
 setup_logging()
 
-# Initialize FastAPI App
 app = FastAPI(
     title="ERP Lite API",
     description="Backend API for Service Center ERP Lite application",
@@ -19,10 +17,8 @@ app = FastAPI(
     openapi_url="/openapi.json",
 )
 
-# Custom Middlewares
 app.add_middleware(CombinedASGIMiddleware)
 
-# Configure CORS Middleware
 if settings.BACKEND_CORS_ORIGINS:
     app.add_middleware(
         CORSMiddleware,
@@ -32,14 +28,11 @@ if settings.BACKEND_CORS_ORIGINS:
         allow_headers=["*"],
     )
 
-# Setup Global Exception Handlers
 setup_exception_handlers(app)
 
-# Include Router
 app.include_router(api_router, prefix="/api/v1")
 
-
-@app.get("/health", tags=["Health"], summary="Health check endpoint")
+@app.get("/health", tags=["Health"])
 async def health_check():
-    """Simple status check for container orchestration and uptime monitoring."""
     return {"status": "ok", "environment": settings.ENVIRONMENT}
+
